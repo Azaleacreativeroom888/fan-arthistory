@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Column — Fragments of Color</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep:  #4a5c3a;
+      --green-mid:   #6b8a5e;
+      --green-light: #a8c4a0;
+      --slate-blue:  #7a8c9a;
+      --bg:          #f5f3ee;
+      --bg-card:     #faf9f6;
+      --ink:         #2c2c28;
+      --ink-muted:   #6a6a62;
+      --rule:        #d4d0c8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Source Serif 4', 'Noto Serif JP', serif;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* ─── HEADER ─── */
+    header { border-top: 3px solid var(--green-deep); padding: 0 2rem; }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 0 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .site-subtitle {
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 0.1rem;
+    }
+
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+
+    nav a {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover, nav a.active { color: var(--green-deep); }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 2.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .page-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--slate-blue);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .page-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 22px;
+      height: 1px;
+      background: var(--slate-blue);
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-desc {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+    }
+
+    /* ─── LAYOUT ─── */
+    .column-layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ─── COLUMN LIST (index view) ─── */
+    .column-list { display: flex; flex-direction: column; gap: 0; }
+
+    .column-card {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 0 2rem;
+      padding: 2.4rem 0;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .column-card:first-child { padding-top: 0; }
+
+    .column-card:hover .column-card-title { color: var(--green-mid); }
+
+    /* left: large number */
+    .column-num {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--green-light);
+      line-height: 1;
+      padding-top: 0.3rem;
+      text-align: right;
+      user-select: none;
+    }
+
+    .column-card-body {}
+
+    .column-card-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--slate-blue);
+      margin-bottom: 0.4rem;
+    }
+
+    .column-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      line-height: 1.35;
+      margin-bottom: 0.65rem;
+      transition: color 0.2s;
+    }
+
+    .column-card-excerpt {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      line-height: 1.85;
+      max-width: 58ch;
+    }
+
+    .column-card-foot {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .column-card-date {
+      font-size: 0.7rem;
+      color: var(--slate-blue);
+      letter-spacing: 0.06em;
+    }
+
+    .read-more {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .read-more:hover { border-color: var(--green-mid); }
+
+    /* ─── ARTICLE VIEW (full column) ─── */
+    .article-view { display: none; }
+    .article-view.open { display: block; }
+    .column-list-wrap.hidden { display: none; }
+
+    .article-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate-blue);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-bottom: 2.4rem;
+      transition: color 0.2s;
+    }
+
+    .article-back:hover { color: var(--green-deep); }
+
+    .article-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--slate-blue);
+      margin-bottom: 0.7rem;
+    }
+
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .article-date {
+      font-size: 0.75rem;
+      color: var(--slate-blue);
+      letter-spacing: 0.08em;
+      margin-bottom: 2.2rem;
+      padding-bottom: 1.8rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* drop cap */
+    .article-body > p:first-of-type::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.8rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      float: left;
+      line-height: 0.82;
+      margin-right: 0.12em;
+      margin-top: 0.08em;
+    }
+
+    .article-body p {
+      font-size: 0.95rem;
+      line-height: 2;
+      color: var(--ink);
+      margin-bottom: 1.4em;
+    }
+
+    .article-body p:last-child { margin-bottom: 0; }
+
+    .article-body h2 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      margin: 2.2rem 0 0.8rem;
+    }
+
+    .article-body blockquote {
+      border-left: 2px solid var(--green-mid);
+      margin: 1.8rem 0;
+      padding: 0.5rem 0 0.5rem 1.6rem;
+      color: var(--ink-muted);
+      font-style: italic;
+      font-size: 0.93rem;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar { position: sticky; top: 2rem; display: flex; flex-direction: column; gap: 1.8rem; }
+
+    .sidebar-box {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      padding: 1.6rem;
+    }
+
+    .sidebar-heading {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--green-deep);
+      margin-bottom: 1rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .sidebar-list { list-style: none; }
+
+    .sidebar-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8rem;
+    }
+
+    .sidebar-list li:last-child { border-bottom: none; }
+
+    .sidebar-list button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--ink-muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      text-align: left;
+      transition: color 0.2s;
+    }
+
+    .sidebar-list button:hover { color: var(--green-deep); }
+
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--rule);
+      color: var(--ink-muted);
+      cursor: default;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tag:hover { border-color: var(--green-mid); color: var(--green-deep); }
+
+    /* ─── FOOTER ─── */
+    footer { border-top: 1px solid var(--rule); padding: 2.5rem 2rem; }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--green-deep);
+    }
+
+    .footer-note {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 800px) {
+      .column-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .sidebar { position: static; }
+      .header-inner { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      nav ul { gap: 1.2rem; }
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+      .footer-note { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div>
+        <a href="index.html" class="site-title">Fragments of Color</a>
+        <div class="site-subtitle">An Art History Fan Site</div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="column.html" class="active">Column</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-eyebrow">Essays &amp; Notes</div>
+    <h1 class="page-title">Column</h1>
+    <p class="page-desc">画家・様式・時代をめぐる、すこし深めの思考の記録。</p>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="column-layout">
+    <main>
+
+      <!-- LIST VIEW -->
+      <div class="column-list-wrap" id="listView">
+        <div class="column-list">
+
+          <article class="column-card" data-id="1">
+            <div class="column-num">01</div>
+            <div class="column-card-body">
+              <div class="column-card-tag">Baroque · Light</div>
+              <h2 class="column-card-title">影の中の真実——カラヴァッジョとテネブリズムの詩学</h2>
+              <p class="column-card-excerpt">光が届かない場所にこそ、絵画の力が宿る。カラヴァッジョが発明したわけではないが、彼ほど闇を「主役」にした画家はいなかった。真っ黒な背景から人物が切り出されるあの感覚は、単なる技法を超えて、存在そのものへの問いかけのように見える。</p>
+              <div class="column-card-foot">
+                <span class="column-card-date">2025.06.18</span>
+                <a class="read-more" href="#" onclick="openArticle(1); return false;">→ 読む</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="column-card" data-id="2">
+            <div class="column-num">02</div>
+            <div class="column-card-body">
+              <div class="column-card-tag">Impressionism · Colour</div>
+              <h2 class="column-card-title">固有色を捨てた日——印象派と「見ること」の革命</h2>
+              <p class="column-card-excerpt">木は緑ではない。水面は青ではない。光の角度と時刻によって、あらゆるものは別の色になる。この「当たり前」を絵画で実践することが、なぜ19世紀のパリではスキャンダルだったのか。印象派を「きれいな絵」として消費することへの、小さな抵抗として書いた。</p>
+              <div class="column-card-foot">
+                <span class="column-card-date">2025.06.03</span>
+                <a class="read-more" href="#" onclick="openArticle(2); return false;">→ 読む</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="column-card" data-id="3">
+            <div class="column-num">03</div>
+            <div class="column-card-body">
+              <div class="column-card-tag">Japonisme · East &amp; West</div>
+              <h2 class="column-card-title">浮世絵がヨーロッパを変えた——ジャポニスムの視覚文法</h2>
+              <p class="column-card-excerpt">1860年代、パリに大量の日本の版画が流入した。モネ、ドガ、ゴッホ、ロートレック——錚々たる画家たちが浮世絵に熱狂した理由は、単なる「エキゾチシズム」ではなかった。輪郭線の力強さ、平坦な色面、大胆に切り取られた構図。それは西洋絵画が失っていた何かへの、切実な憧れだったのかもしれない。</p>
+              <div class="column-card-foot">
+                <span class="column-card-date">2025.05.20</span>
+                <a class="read-more" href="#" onclick="openArticle(3); return false;">→ 読む</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="column-card" data-id="4">
+            <div class="column-num">04</div>
+            <div class="column-card-body">
+              <div class="column-card-tag">Renaissance · Space</div>
+              <h2 class="column-card-title">神学的遠近法から幾何学へ——ルネサンスが「空間」を発明した</h2>
+              <p class="column-card-excerpt">中世の絵画では、重要な人物は大きく描かれた。遠近法は「見え方」の問題ではなく「意味」の問題だった。ブルネレスキの鏡の実験から始まる透視図法の発明は、絵画に「観察者」という概念を持ち込んだ。それはルネサンスが「人間」を発見した瞬間でもあった。</p>
+              <div class="column-card-foot">
+                <span class="column-card-date">2025.05.07</span>
+                <a class="read-more" href="#" onclick="openArticle(4); return false;">→ 読む</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div><!-- /listView -->
+
+      <!-- ARTICLE VIEW -->
+      <div class="article-view" id="articleView">
+        <button class="article-back" id="backBtn">← Column 一覧へ</button>
+        <div id="articleContent"></div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <div class="sidebar-heading">Columns</div>
+        <ul class="sidebar-list">
+          <li><button onclick="openArticle(1)">影の中の真実</button></li>
+          <li><button onclick="openArticle(2)">固有色を捨てた日</button></li>
+          <li><button onclick="openArticle(3)">浮世絵がヨーロッパを変えた</button></li>
+          <li><button onclick="openArticle(4)">神学的遠近法から幾何学へ</button></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-heading">Topics</div>
+        <div class="tag-cloud">
+          <span class="tag">バロック</span>
+          <span class="tag">印象派</span>
+          <span class="tag">ジャポニスム</span>
+          <span class="tag">ルネサンス</span>
+          <span class="tag">光と影</span>
+          <span class="tag">色彩論</span>
+          <span class="tag">遠近法</span>
+          <span class="tag">版画</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Fragments of Color</div>
+      <div class="footer-note">
+        当サイトの文章・画像のAI学習および無断転載を禁じます。<br>
+        &copy; Fragments of Color. Personal fan site.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const articles = {
+      1: {
+        tag: 'Baroque · Light',
+        title: '影の中の真実——カラヴァッジョとテネブリズムの詩学',
+        date: '2025.06.18',
+        body: `
+          <p>光が届かない場所にこそ、絵画の力が宿る。カラヴァッジョ（1571–1610）が発明したわけではないが、彼ほど闇を「主役」にした画家はいなかった。真っ黒な背景から人物が切り出されるあの感覚は、単なる技法を超えて、存在そのものへの問いかけのように見える。</p>
+
+          <h2>テネブリズムとキアロスクーロの違い</h2>
+          <p>しばらくこの二つの言葉を混同していた。キアロスクーロ（chiaroscuro）はレオナルド・ダ・ヴィンチに代表される「光と影のグラデーション」技法全般を指す。スフマートのような、輪郭を溶かしながら立体感を出す技術もその一つだ。</p>
+          <p>一方テネブリズム（tenebrism）は、カラヴァッジョが極端に発展させた手法で、背景を限りなく暗くし、光の当たる部分だけを劇的に浮かび上がらせる。舞台照明に近い、ほとんど演劇的な効果がある。</p>
+
+          <blockquote>闇は影ではなく、それ自体が実体として存在する——カラヴァッジョの絵を前にするとそう思わずにいられない。</blockquote>
+
+          <h2>「聖マタイの召命」で起きていること</h2>
+          <p>サン・ルイジ・デイ・フランチェージ聖堂にある《聖マタイの召命》を図版で繰り返し見ている。右側から差し込む一筋の光。キリストの指先が示す方向に、その光が重なる。マタイらしき人物は俯いて指で自分を指している。「私のことですか」という問いが聞こえてくるようだ。</p>
+          <p>この絵で光は「神の意志」の比喩であり、同時に物理的な現象として描かれている。信仰と写実が分離せずに同居している点が、カラヴァッジョの革新だったと思う。</p>
+
+          <h2>暴力的な生涯と暴力的な絵</h2>
+          <p>カラヴァッジョは殺人を犯し、各地を逃れながら絵を描き続けた。その生涯の激しさが絵に出ているのか、絵の激しさが生涯を呼んだのか、どちらかわからない。ただ、彼の死後に「カラヴァッジェスキ（カラヴァッジョ派）」と呼ばれる追随者が各地に現れたことは、この手法が単なる個人的趣味ではなく、時代の何かに触れていたことを示している。</p>
+          <p>次はスペインのリベーラやフランスのラ・トゥールを調べてみたい。テネブリズムがどのように変容したか、地域ごとに比べると面白そうだ。</p>
+        `
+      },
+      2: {
+        tag: 'Impressionism · Colour',
+        title: '固有色を捨てた日——印象派と「見ること」の革命',
+        date: '2025.06.03',
+        body: `
+          <p>木は緑ではない。水面は青ではない。光の角度と時刻によって、あらゆるものは別の色になる。この「当たり前」を絵画で実践することが、なぜ19世紀のパリではスキャンダルだったのか。印象派を「きれいな絵」として消費することへの、小さな抵抗として書いておきたい。</p>
+
+          <h2>固有色という呪縛</h2>
+          <p>それ以前の絵画には「固有色（local colour）」という考え方があった。草は緑、空は青、肌は肌色。物体にはそれぞれ「本来の色」があり、絵画はそれを再現するものだという前提だ。ルネサンスから続くこの考え方を、印象派は根本から疑った。</p>
+          <p>モネが同じ藁塚（積みわら）を朝・昼・夕・冬・夏と繰り返し描いたのは、まさにその実験だった。主題は藁塚ではなく、光だった。</p>
+
+          <blockquote>「私は瞬間を描く。その瞬間は二度と来ない。」——クロード・モネ（趣意）</blockquote>
+
+          <h2>筆触分割と目の混色</h2>
+          <p>印象派の技法として有名な「筆触分割」は、色を混ぜてから塗るのではなく、原色に近い色を並べて置くことで、見る側の目の中で混色させる手法だ。キャンバス上で緑を作るのではなく、黄と青を隣に置く。</p>
+          <p>これはその後スーラの「点描（ポワンティリスム）」に発展するが、印象派の段階ではもっと感覚的で、筆の勢いや方向も光の「揺らぎ」を表現する手段だった。</p>
+
+          <h2>サロン落選の意味</h2>
+          <p>1863年のサロン（官展）で大量落選した作品を集めた「落選展（サロン・デ・ルフゼ）」に、マネの《草上の昼食》が展示された。これは印象派の前史だが、「公的な美の基準」への反逆という点で、その後の印象派展（1874年〜）と同じ精神を持っている。</p>
+          <p>当時の批評は手厳しかった。「未完成な習作を展示している」という批判が多かったが、これはある意味で正しい。印象派は「完成された表面」よりも「その瞬間の感覚」を優先した。従来の価値基準では、それは「未完成」に見えた。</p>
+          <p>完成とは何か、という問いは、絵を描く自分にとっても他人事ではない。</p>
+        `
+      },
+      3: {
+        tag: 'Japonisme · East & West',
+        title: '浮世絵がヨーロッパを変えた——ジャポニスムの視覚文法',
+        date: '2025.05.20',
+        body: `
+          <p>1860年代、パリに大量の日本の版画が流入した。モネ、ドガ、ゴッホ、ロートレック——錚々たる画家たちが浮世絵に熱狂した理由は、単なる「エキゾチシズム」ではなかった。輪郭線の力強さ、平坦な色面、大胆に切り取られた構図。それは西洋絵画が失っていた何かへの、切実な憧れだったのかもしれない。</p>
+
+          <h2>なぜ浮世絵だったのか</h2>
+          <p>当時のヨーロッパ絵画は、写実主義とアカデミズムの重圧の下にあった。遠近法、陰影、滑らかな表面——長い時間をかけて確立された「正しい絵の描き方」が、同時に息苦しさを生み出していた。</p>
+          <p>そこに現れた浮世絵は、まったく異なる視覚文法で成立していた。陰影がない。遠近法が西洋的ではない。輪郭線が太く明快だ。そして何より、構図が大胆すぎる——主題が画面の端で切れていたり、空間の大部分が余白だったりする。</p>
+
+          <blockquote>日本の芸術家が持っているあの確かさ、まるで息をするように自然なデッサンの力——これは羨ましい。——ヴィンセント・ファン・ゴッホ（書簡より、趣意）</blockquote>
+
+          <h2>ドガの「切り取り」とロートレックの平面性</h2>
+          <p>ドガが浮世絵から学んだのは主に構図だったと思う。人物が画面の端で唐突に切れる感覚、斜めから見下ろすアングル、中心を外した配置——これらは西洋の古典的な「均衡のとれた構図」とは正反対だ。バレエダンサーや競馬場の絵を見ると、カメラで切り取ったような偶発性がある。</p>
+          <p>ロートレックはさらに平坦な色面と太い輪郭線を採り入れた。ムーラン・ルージュのポスターが「版画的」に見えるのは偶然ではなく、意図的な浮世絵の文法の導入だ。</p>
+
+          <h2>モネの日本庭園</h2>
+          <p>モネはジヴェルニーに日本式の庭園を作り、太鼓橋を架け、睡蓮を植えた。実際に日本を訪れたことはなかったが、版画から吸収した「日本」のイメージを空間として実体化した。晩年の睡蓮シリーズはその庭を描いたものだ。</p>
+          <p>これは影響関係の面白い逆転で、浮世絵から学んだモネが、浮世絵的な「余白と水面の反映」を油彩で大規模に展開した。東西の視覚文法が混合した場所として、ジヴェルニーの庭はとても象徴的だと思う。</p>
+        `
+      },
+      4: {
+        tag: 'Renaissance · Space',
+        title: '神学的遠近法から幾何学へ——ルネサンスが「空間」を発明した',
+        date: '2025.05.07',
+        body: `
+          <p>中世の絵画では、重要な人物は大きく描かれた。遠近法は「見え方」の問題ではなく「意味」の問題だった。ブルネレスキの鏡の実験から始まる透視図法の発明は、絵画に「観察者」という概念を持ち込んだ。それはルネサンスが「人間」を発見した瞬間でもあった。</p>
+
+          <h2>神学的遠近法という言葉</h2>
+          <p>中世絵画の遠近法のなさを「稚拙」と見なすのは間違いだと思う。聖母マリアが画面の中央に大きく描かれ、天使や聖人が小さく周囲に配置されるあの様式は、「重要性」「聖性」を視覚化する合理的な選択だった。見る者に伝えるべき「意味の序列」があり、サイズはその表現手段だった。</p>
+          <p>この考え方を「神学的遠近法」と呼ぶことがある。物理的な距離ではなく、霊的・象徴的な重要度が大きさを決める。</p>
+
+          <h2>ブルネレスキの実験</h2>
+          <p>フィリッポ・ブルネレスキ（1377–1446）が行ったとされる有名な実験がある。フィレンツェのサン・ジョヴァンニ洗礼堂を描いたパネルに穴を開け、パネルの裏から穴を通して鏡に映った絵を見ると、現実の建物と一致する——という実証実験だ。</p>
+          <p>これは絵画が「見えている通りの世界」を再現できることの実証であり、「観察する主体（＝人間）」の視点を絵画の基準点に置くという革命的な転換だった。神ではなく、人間の目が世界を測る。</p>
+
+          <blockquote>遠近法は、絵画を「神の世界の象徴」から「人間の目に映る世界」へと変えた。それはひとつの神学的事件でもある。</blockquote>
+
+          <h2>一点透視図法の「消失点」が示すもの</h2>
+          <p>一点透視図法では、すべての平行線が一つの「消失点」に向かって収束する。この消失点は、観察者の視線の延長上にある。つまり透視図法とは、特定の一人の人間がある位置に立って見た世界の再現であり、「見る主体」なしには成立しない技法だ。</p>
+          <p>マサッチョの《聖三位一体》（1427年頃）はこの技法を絵画に適用した最初期の例のひとつとされる。アーチ型の空間が奥へと消えていく感覚は、500年以上前の作品とは思えないほど現代的に見える。</p>
+          <p>漫画のコマ割りでパースを使うとき、消失点の位置が「読者をどこに立たせるか」を決めるのと同じことだと気づいた。技法の奥に、視点の思想がある。</p>
+        `
+      }
+    };
+
+    function openArticle(id) {
+      const a = articles[id];
+      if (!a) return;
+
+      document.getElementById('articleContent').innerHTML = `
+        <div class="article-tag">${a.tag}</div>
+        <h1 class="article-title">${a.title}</h1>
+        <div class="article-date">${a.date}</div>
+        <div class="article-body">${a.body}</div>
+      `;
+
+      document.getElementById('listView').classList.add('hidden');
+      document.getElementById('articleView').classList.add('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      document.getElementById('articleView').classList.remove('open');
+      document.getElementById('listView').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // card click
+    document.querySelectorAll('.column-card').forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.classList.contains('read-more')) return;
+        openArticle(Number(card.dataset.id));
+      });
+    });
+  </script>
+
+</body>
+</html>
