@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Fragments of Color</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep:  #4a5c3a;
+      --green-mid:   #6b8a5e;
+      --green-light: #a8c4a0;
+      --slate-blue:  #7a8c9a;
+      --bg:          #f5f3ee;
+      --bg-card:     #faf9f6;
+      --ink:         #2c2c28;
+      --ink-muted:   #6a6a62;
+      --rule:        #d4d0c8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Source Serif 4', 'Noto Serif JP', serif;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* ─── HEADER ─── */
+    header { border-top: 3px solid var(--green-deep); padding: 0 2rem; }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 0 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .site-subtitle {
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 0.1rem;
+    }
+
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+
+    nav a {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover, nav a.active { color: var(--green-deep); }
+
+    /* ─── PAGE TITLE ─── */
+    .page-header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 2.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .page-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--slate-blue);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .page-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 22px;
+      height: 1px;
+      background: var(--slate-blue);
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--green-deep);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-desc {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+    }
+
+    /* ─── BLOG LAYOUT ─── */
+    .blog-layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ─── FEED ─── */
+    .feed { display: flex; flex-direction: column; }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .entry:first-child { padding-top: 0; }
+
+    .entry-date-col {
+      padding-top: 0.15rem;
+      text-align: right;
+    }
+
+    .entry-year {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--slate-blue);
+      display: block;
+    }
+
+    .entry-day {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--green-light);
+      line-height: 1;
+      display: block;
+    }
+
+    .entry-monthday {
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.05em;
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    .entry-body {
+      font-size: 0.92rem;
+      color: var(--ink);
+      line-height: 1.95;
+    }
+
+    .entry-body p + p { margin-top: 0.9em; }
+
+    .entry-body strong {
+      font-weight: 400;
+      color: var(--green-deep);
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar { position: sticky; top: 2rem; display: flex; flex-direction: column; gap: 1.8rem; }
+
+    .sidebar-box {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      padding: 1.6rem;
+    }
+
+    .sidebar-heading {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--green-deep);
+      margin-bottom: 1rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .sidebar-links { list-style: none; }
+
+    .sidebar-links li {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.8rem;
+    }
+
+    .sidebar-links li:last-child { border-bottom: none; }
+
+    .sidebar-links a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-links a:hover { color: var(--green-deep); }
+
+    .sidebar-links .link-date {
+      font-size: 0.68rem;
+      color: var(--slate-blue);
+      letter-spacing: 0.04em;
+    }
+
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--rule);
+      color: var(--ink-muted);
+      cursor: default;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tag:hover { border-color: var(--green-mid); color: var(--green-deep); }
+
+    /* ─── FOOTER ─── */
+    footer { border-top: 1px solid var(--rule); padding: 2.5rem 2rem; }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--green-deep);
+    }
+
+    .footer-note {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .header-inner { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+      nav ul { gap: 1.2rem; }
+      .blog-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .sidebar { position: static; }
+      .entry { grid-template-columns: 64px 1fr; gap: 0 1.2rem; }
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+      .footer-note { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div>
+        <a href="index.html" class="site-title">Fragments of Color</a>
+        <div class="site-subtitle">An Art History Fan Site</div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="blog.html" class="active">Blog</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="column.html">Column</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-eyebrow">Study Notes</div>
+    <h1 class="page-title">Blog</h1>
+    <p class="page-desc">美術史の勉強記録。気づいたこと、調べたことをそのまま。</p>
+  </div>
+
+  <!-- MAIN -->
+  <div class="blog-layout">
+    <main class="feed">
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">20</span>
+          <span class="entry-monthday">Jun</span>
+        </div>
+        <div class="entry-body">
+          <p>フェルメールの光の使い方をじっくり調べた。窓から差し込む光が左側に固定されているのは有名だけれど、改めて作品を並べてみると、光の「質」がどれも同じではないことに気づく。《牛乳を注ぐ女》の拡散した白昼光と、《真珠の耳飾りの少女》の劇的なハイライトは、同じ画家の手によるものとは思えないほど雰囲気が違う。</p>
+          <p>光は「どこから当てるか」より「何を照らし、何を隠すか」の問題なのかもしれない。</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">14</span>
+          <span class="entry-monthday">Jun</span>
+        </div>
+        <div class="entry-body">
+          <p>カラヴァッジョの<strong>キアロスクーロ</strong>について。明暗対比のことだとずっと思っていたけれど、正確には「テネブリズム」と「キアロスクーロ」は別物だと知った。キアロスクーロはレオナルドから続く光と影のグラデーション技法で、カラヴァッジョのような真っ暗な背景から人物を切り取る手法はテネブリズムと呼ぶらしい。</p>
+          <p>用語を正確に使えるようになると、作品の見え方が少し変わる気がする。</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">08</span>
+          <span class="entry-monthday">Jun</span>
+        </div>
+        <div class="entry-body">
+          <p>ルネサンスの一点透視図法、ようやく腑に落ちてきた。ブルネレスキが実験したパネルの話を読んで、これが「見る」という行為そのものを再構成しようとした試みだったと理解した。それまでの絵画は「重要なものを大きく描く」神学的遠近法だったから、幾何学的な空間の再現という発想はかなり革命的だったはず。</p>
+          <p>漫画のパースを練習するときにも、この感覚は直接役に立ちそう。</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">30</span>
+          <span class="entry-monthday">May</span>
+        </div>
+        <div class="entry-body">
+          <p>印象派の絵を見るたびに不思議に思っていたことに、少し答えが出た。なぜあんなに光が「揺れて」見えるのか。筆触分割（色を混ぜずに並べて置く技法）によって、見る側の目が混色するから、というのは知っていたけれど、今日読んだ解説で「固有色を捨てた」という点に改めて気づいた。木は緑ではなく、光の当たり方によって白にも金にもなる、という観察の徹底。</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">22</span>
+          <span class="entry-monthday">May</span>
+        </div>
+        <div class="entry-body">
+          <p>ゴシック建築の「垂直性」という概念を勉強した。柱を細く束ねてリブ・ヴォールト天井を支えることで、壁の面積を減らしてステンドグラスを大きく取れる。光を「神の恩寵」と見なす神学的思想と、技術革新が一致した瞬間だったと思うと、建築って面白い。シャルトル大聖堂の写真を見るだけでも伝わってくるものがある。</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">15</span>
+          <span class="entry-monthday">May</span>
+        </div>
+        <div class="entry-body">
+          <p>浮世絵と印象派の影響関係、いわゆる<strong>ジャポニスム</strong>についてまとめ直してみた。モネが版画を集めていたのは有名だけど、ドガの構図の切り取り方（画面の端で人物が切れる感じ）も浮世絵的だと気づいた。西洋と日本の視覚的な文法が出会った瞬間として、もう少し深く掘り下げたい。</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="entry-date-col">
+          <span class="entry-year">2025</span>
+          <span class="entry-day">06</span>
+          <span class="entry-monthday">May</span>
+        </div>
+        <div class="entry-body">
+          <p>今日はミケランジェロの素描を眺めていた。システィナ礼拝堂の天井画のための習作が残っていて、あの力強い人体がこんなに細かく検討されているのかと驚く。完成した作品だけを「芸術」と思いがちだけれど、下書きや習作に作家の思考過程が詰まっていると感じた。</p>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <div class="sidebar-heading">Recent Entries</div>
+        <ul class="sidebar-links">
+          <li><a href="#"><span>フェルメールの光</span><span class="link-date">06.20</span></a></li>
+          <li><a href="#"><span>カラヴァッジョ覚書</span><span class="link-date">06.14</span></a></li>
+          <li><a href="#"><span>透視図法メモ</span><span class="link-date">06.08</span></a></li>
+          <li><a href="#"><span>印象派の光</span><span class="link-date">05.30</span></a></li>
+          <li><a href="#"><span>ゴシック建築</span><span class="link-date">05.22</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-heading">Topics</div>
+        <div class="tag-cloud">
+          <span class="tag">ルネサンス</span>
+          <span class="tag">バロック</span>
+          <span class="tag">印象派</span>
+          <span class="tag">フェルメール</span>
+          <span class="tag">カラヴァッジョ</span>
+          <span class="tag">ゴシック</span>
+          <span class="tag">浮世絵</span>
+          <span class="tag">素描</span>
+          <span class="tag">色彩論</span>
+          <span class="tag">遠近法</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Fragments of Color</div>
+      <div class="footer-note">
+        当サイトの文章・画像のAI学習および無断転載を禁じます。<br>
+        &copy; Fragments of Color. Personal fan site.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
